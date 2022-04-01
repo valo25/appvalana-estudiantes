@@ -1,24 +1,17 @@
 from django.db import models
 
 # Create your models here.
-class Curso(models.Model):
-    nombre = models.CharField(max_length=40)
-    camada = models.IntegerField(primary_key=True)
+class Posteo(models.Model):
+    id = models.AutoField(primary_key=True)
+    titulo = models.CharField(max_length=100)
+    texto = models.CharField(max_length=1000)
 
-class Estudiante(models.Model):
+class Pais(models.Model):
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=40)
-    apellido = models.CharField(max_length=40)
-    email = models.EmailField(primary_key=True)
+    capital = models.CharField(max_length=40)
 
-class Profesor(models.Model):
-    nombre = models.CharField(max_length=40)
-    apellido = models.CharField(max_length=40)
-    email = models.EmailField(primary_key=True)
-    profesion = models.CharField(max_length=60)
-
-class Entregable(models.Model):
-    nombre = models.CharField(max_length=40)
-    fecha_entregado = models.DateField()
-    fecha_entregado = models.BooleanField()
-    calificacion_minima = models.FloatField()
-
+class Imagen(models.Model):
+    id = models.AutoField(primary_key=True)
+    titulo = models.CharField(max_length=40)
+    descripcion = models.CharField(max_length=500)

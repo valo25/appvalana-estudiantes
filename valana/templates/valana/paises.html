@@ -1,0 +1,17 @@
+{% extends 'valana/base.html' %}
+
+{% block main_content %}
+ 
+<p>Paises visitados</p>
+
+{% if paises %}
+<ul>
+    {% for pais in paises %}
+
+        <li><strong>{{pais.nombre}}</strong></li>
+        <li>{{pais.capital}}</li>
+
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock main_content %}
