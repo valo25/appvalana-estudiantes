@@ -1,0 +1,26 @@
+{% extends 'appcoder/base.html' %}
+
+
+{% block main_content %}
+<h1 class="text-center mt-4">Posteos - <span style="color: #e0ff00; text-shadow: -.5px 0 black, 0 .5px black, .5px 0 black, 0 -.5px black;">Valana</span></h1>
+
+<div class="container m-5">
+    <div class="card-columns">
+        {% for posteo in object_list %}
+        <div class="card text-center p-3 m-3">
+            <div class="card-body">
+                <h5 class="card-title">{{posteo.titulo}}</h5>
+                <a class="card-link" href="{%url 'posteo_detail' posteo.texto%}">Detalle</a> |
+                <a class="card-link" href="{%url 'posteo_update' posteo.texto%}">Actualizar</a> |
+                <a class="card-link" href="{%url 'posteo_delete' posteo.texto%}">Borrar</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container">
+    <a class="btn btn-primary btn-sm" href="{% url 'posteo_create' %}">Agregar posteo</a>
+</div>
+
+{% endblock main_content %}

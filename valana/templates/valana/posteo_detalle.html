@@ -1,0 +1,16 @@
+{% extends 'appcoder/base.html' %}
+    
+{% block main_content %}
+
+<div class="container-sm mt-3">
+    <h1 class="text-center mt-4">Informacion del posteo</h1>
+    
+    <p class="text-center">Titulo del posteo: {{posteo.titulo}}</p>
+    <p class="text-center">Texto: {{posteo.texto}}</p>
+    
+    <p class="text-center" >
+        <a href="{% url 'posteo_list' %}">Regresar</a>
+    </p>
+</div>
+
+{% endblock main_content %}
