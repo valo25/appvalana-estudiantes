@@ -1,0 +1,17 @@
+{% extends 'valana/base.html' %}
+
+{% block main_content %}
+ 
+<p>Imagenes</p>
+
+
+    {% if fotos %}
+        {% for foto in fotos %}
+
+            {{foto.titulo}}
+            {{foto.foto}}
+            {{foto.descripcion}}
+
+        {% endfor %}
+    {% endif %}
+{% endblock main_content %}

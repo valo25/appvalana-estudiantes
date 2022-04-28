@@ -29,7 +29,16 @@
                     <ul class="navbar-nav ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'posteos' %}">Posteos</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'paises' %}">Paises</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'imagenes' %}">Imagenes</a></li>   
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'fotos' %}">Fotos</a></li>  
+                        
+                        {% if not request.user.is_authenticated %}
+                            <li class="nav-item"><a class="btn btn-primary" href="{% url 'login' %}">Iniciar sesión</a>   </li> 
+                        {% else %}
+                            <p><strong>{{request.user.username}}</strong></p>                        
+                            <img src="{{imagen_url}}" alt="Imagen" style="max-width: 100px;">
+                        {% endif %}
+
+
                     </ul>
                 </div>
             </div>
@@ -47,6 +56,14 @@
                 </div>
             </div>
         </header>
+
+
+        {% if errors %}
+            {% for error in errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+       
         <!-- Main Content-->
         {% block main_content %}{% endblock %}
     

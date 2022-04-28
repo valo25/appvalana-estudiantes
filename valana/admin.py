@@ -1,9 +1,8 @@
 from django.contrib import admin
-from valana.models import Posteo
-from valana.models import Imagen
-from valana.models import Pais
+from valana.models import *
 # Register your models here.
 
 admin.site.register(Posteo)
-admin.site.register(Imagen)
+admin.site.register(Foto)
 admin.site.register(Pais)
+admin.site.register(Avatar)

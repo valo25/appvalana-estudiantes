@@ -1,17 +1,29 @@
 {% extends 'valana/base.html' %}
 
 {% block main_content %}
- 
-<p>Paises visitados</p>
 
-{% if paises %}
-<ul>
-    {% for pais in paises %}
+<h2>Paises visitados</h2>
+ <div class="container mt-5">
+     <table class="table">
+        <thead>
+            <tr>
+                <th class="table-success">Paises</th>
+                <th class="table-success">Capitales</th>
+            </tr>
+        </thead>
 
-        <li><strong>{{pais.nombre}}</strong></li>
-        <li>{{pais.capital}}</li>
+        <tbody>
+            {% if paises %}
+                {% for pais in paises %}
 
-    {% endfor %}
-</ul>
-{% endif %}
+                    <tr>
+                    <td>{{pais.nombre}}</strong></td>
+                    <td>{{pais.capital}}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+
+    </table>
+</div>
 {% endblock main_content %}
