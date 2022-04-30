@@ -2,19 +2,20 @@
 
 
 {% block main_content %}
-<h1 class="text-center mt-4">Posteos</h1>
 
 <div class="container m-5">
     <div class="card-columns">
+        
         {% for posteo in object_list %}
-        <div class="card text-center p-3 m-3">
-            <div class="card-body">
-                <h5 class="card-title">{{posteo.titulo}}</h5>
-                <a class="card-link" href="{%url 'posteo_detail' posteo.id%}">Detalle</a> |
-                <a class="card-link" href="{%url 'posteo_update' posteo.id%}">Actualizar</a> |
-                <a class="card-link" href="{%url 'posteo_delete' posteo.id%}">Borrar</a>
+            <div class="card text-center p-3 m-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{posteo.titulo}}</h5>
+                    <h6 class="card-subtitle">{{posteo.subtitulo}}</h6>
+                    <a class="card-link" href="{%url 'posteo_detail' posteo.id%}">Detalle</a> |
+                    <a class="card-link" href="{%url 'posteo_update' posteo.id%}">Actualizar</a> |
+                    <a class="card-link" href="{%url 'posteo_delete' posteo.id%}">Borrar</a>
+                </div>
             </div>
-        </div>
         {% endfor %}
     </div>
 </div>

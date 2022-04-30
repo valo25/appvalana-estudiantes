@@ -13,6 +13,7 @@ urlpatterns = [
 
 
     path("paises/", paises, name = 'paises'),
+
     path("fotos/", fotos, name = 'fotos'),
     path("cargar_foto/", cargar_foto, name="CargarFoto"),
 
@@ -29,7 +30,10 @@ urlpatterns = [
     path("posteo/borrar/<pk>/", PosteoBorrar.as_view(), name="posteo_delete"),
 
     path("actualizar_usuario/", actualizar_usuario, name="EditarUsuario"),
-    path("cargar_avatar/", cargar_avatar, name="CargarAvatar")
+    path("cargar_avatar/", cargar_avatar, name="CargarAvatar"),
+    path("profile/", profile, name="profile" ),
+
+    path("about/", about, name="about" )
     
 
 

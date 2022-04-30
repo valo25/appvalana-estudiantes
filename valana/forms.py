@@ -39,6 +39,6 @@ class AvatarFormulario(forms.Form):
     imagen = forms.ImageField()
 
 class FotoFormulario(forms.Form):
-    foto = forms.ImageField()
+    imagen = forms.ImageField()
     titulo = forms.CharField(max_length=40)
     descripcion = forms.CharField(max_length=200)

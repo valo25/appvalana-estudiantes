@@ -22,39 +22,69 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
 def inicio(request):
-    #date_init = datetime.now()
-    avatar = Avatar.objects.filter(user=request.user)
+ 
+    if request.user.is_authenticated:  
+        avatar = Avatar.objects.filter(user=request.user)
+        if len(avatar) > 0:
+            imagen = avatar[0].imagen.url
+            dict_ctx = {"title": "Inicio", "page": "Inicio", "imagen_url": imagen}
+        else:
+            dict_ctx = {"title": "Inicio", "page": "Inicio"}
+        return render(request, "valana/index.html", dict_ctx)
+    else:
+        return render(request, "valana/index.html")
     
-    if len(avatar) > 0:
-        imagen = avatar[0].imagen.url
+def about(request):    
+    if request.user.is_authenticated:  
+        avatar = Avatar.objects.filter(user=request.user)
+        if len(avatar) > 0:
+            imagen = avatar[0].imagen.url
+            dict_ctx = {"title": "About", "page": "About", "imagen_url": imagen}
+        else:
+            dict_ctx = {"title": "About", "page": "About"}
+        return render(request, "valana/about.html", dict_ctx)
+    else:
+        return render(request, "valana/about.html")
+    
 
-    dict_ctx = {"title": "Inicio", "page": "Inicio", "imagen_url": imagen}
-    #dict_user = {"user": "anamornig", "date_init":date_init}
-    return render(request, "valana/index.html", dict_ctx)
-
+@login_required()
 def paises(request):
+    if request.user.is_authenticated:  
+        avatar = Avatar.objects.filter(user=request.user)
+        if len(avatar) > 0:
+            imagen = avatar[0].imagen.url
+            dict_ctx = {"title": "Paises", "page": "Paises", "imagen_url": imagen}
+            paises = Pais.objects.all()
+            return render(request, "valana/paises.html", {"paises": paises, "title": "Paises", "page": "Paises", "imagen_url": imagen})
     
-    avatar = Avatar.objects.filter(user=request.user)
-    
-    if len(avatar) > 0:
-        imagen = avatar[0].imagen.url
+        else:
+            dict_ctx = {"title": "Paises", "page": "Paises"}
+        paises = Pais.objects.all()
+        return render(request, "valana/paises.html", dict_ctx)
+    else:
+        paises = Pais.objects.all()
+        return render(request, "valana/paises.html", {"paises": paises, "title": "Paises", "page": "Paises", "imagen_url": imagen})
+  
 
-    dict_ctx = {"title": "Inicio", "page": "Inicio", "imagen_url": imagen}
-    paises = Pais.objects.all()
-    return render(request, "valana/paises.html", {"paises": paises, "title": "Paises", "page": "Paises", "imagen_url": imagen})
 
+@login_required()
 def fotos(request):
+
+    if request.user.is_authenticated:  
+        avatar = Avatar.objects.filter(user=request.user)
+        if len(avatar) > 0:
+            imagen = avatar[0].imagen.url
+            dict_ctx = {"title": "Fotos", "page": "Fotos", "imagen_url": imagen}
+        else:
+            dict_ctx = {"title": "Fotos", "page": "Fotos"}
+        fotos = Foto.objects.all()
+        return render(request, "valana/fotos.html", dict_ctx)
+    else:
+        fotos = Foto.objects.all()
+        return render(request, "valana/fotos.html", {"fotos": fotos, "title": "Fotos", "page": "Fotos", "imagen_url": imagen})
     
-    avatar = Avatar.objects.filter(user=request.user)
-    
-    if len(avatar) > 0:
-        imagen = avatar[0].imagen.url
-    dict_ctx = {"title": "Inicio", "page": "Inicio", "imagen_url": imagen}
-   
-    
-    fotos = Foto.objects.all()
-    return render(request,"valana/fotos.html", {"fotos": fotos, "title": "Fotos", "page": "Fotos"})
 
 @login_required()
 def posteos(request):
@@ -73,14 +103,14 @@ def posteos(request):
         if formulario.is_valid():
             data = formulario.cleaned_data
 
-            posteo = Posteo(data['titulo'], data['texto'])
+            posteo = Posteo(data['titulo'], data['subtitulo'], data['texto'], data['imagenposteo'], data['autor'])
             posteo.save()
 
             return redirect("inicio")
     else:   
         
         formulario = PosteoFormulario()
-        return render(request, "valana/posteos.html", {"posteos": posteos, "title": "Posteos", "page": "Posteos", "formulario": formulario, "imagen_url": imagen})
+        return render(request, "valana/posteo_list.html", {"posteos": posteos, "title": "Posteos", "page": "Posteos", "formulario": formulario, "imagen_url": imagen})
 
 def buscar_posteo(request):
     avatar = Avatar.objects.filter(user=request.user)
@@ -155,12 +185,12 @@ class PosteoDetalle(DetailView):
 class PosteoCrear(CreateView):
     model = Posteo
     success_url = "/valana/posteo/list"
-    fields = ['titulo', 'texto']
+    fields = ['titulo','subtitulo', 'texto', 'autor', 'imagenposteo']
 
 class PosteoActualizar(UpdateView):
     model = Posteo
     success_url = "/valana/posteo/list"
-    fields = ['texto']
+    fields = ['titulo', 'subtitulo', 'texto', 'imagenposteo']
 
 class PosteoBorrar(DeleteView):
     model = Posteo
@@ -168,10 +198,8 @@ class PosteoBorrar(DeleteView):
 
 
 def login_request(request):
-    
-    avatar = Avatar.objects.filter(user=request.user)[0].imagen.url
-    
-    dict_ctx = {"title": "Inicio", "page": "Inicio", "imagen_url": "imagen"}
+
+
     if request.method == "POST":
         formulario = AuthenticationForm(request, data=request.POST)
         if formulario.is_valid():
@@ -202,9 +230,6 @@ def login_request(request):
 
 def register_request(request):
     
-    avatar = Avatar.objects.filter(user=request.user)[0].imagen.url
-    
-    dict_ctx = {"title": "Inicio", "page": "Inicio", "imagen_url": "imagen"}
     if request.method == "POST":
         form = UsuarioRegistroForm(request.POST)
         if form.is_valid():
@@ -254,14 +279,15 @@ def actualizar_usuario(request):
 def cargar_avatar(request):
 
     if request.method == "POST":
-        formulario = AvatarFormulario(request.FILES)
+        formulario = AvatarFormulario(request.POST, request.FILES)
         if formulario.is_valid():
             usuario = request.user
             
             avatar = Avatar.objects.filter(user=usuario)
 
             if len(avatar) > 0:
-                avatar.image = formulario.cleaned_data["imagen"]
+                avatar = avatar[0]
+                avatar.imagen = formulario.cleaned_data["imagen"]
                 avatar.save()
             else:
                 avatar = Avatar(user=usuario, imagen=formulario.cleaned_data["imagen"])
@@ -274,19 +300,31 @@ def cargar_avatar(request):
 @login_required
 def cargar_foto(request):
     if request.method == "POST":
-        formulario = FotoFormulario(request.FILES)
+        formulario = FotoFormulario(request.POST, request.FILES)
         if formulario.is_valid():
-            
             
             foto = Foto.objects.all()
            
             if len(foto) > 0:
-                foto.image = formulario.cleaned_data["foto"]
+                
+                foto.imagen = formulario.cleaned_data["imagen"]
+                foto.titulo = formulario.cleaned_data["titulo"]
+                foto.descripcion = formulario.cleaned_data["descripcion"]
                 foto.save()
             else:
-                foto = Foto( foto=formulario.cleaned_data["foto"])
+                foto = Foto(foto, imagen=formulario.cleaned_data["imagen"])
                 foto.save()
         return redirect("fotos")
     else:
         formulario = FotoFormulario()
         return render(request, "valana/cargar_foto.html", {"form": formulario} )
+
+def profile(request):
+    avatar = Avatar.objects.filter(user=request.user)
+    
+    if len(avatar) > 0:
+        imagen = avatar[0].imagen.url
+
+    dict_ctx = {"title": "Perfil", "page": "Perfil", "imagen_url": imagen}
+    #dict_user = {"user": "anamornig", "date_init":date_init}
+    return render(request, "valana/profile.html", dict_ctx)

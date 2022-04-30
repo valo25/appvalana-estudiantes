@@ -6,7 +6,10 @@
     <h1 class="text-center mt-4">Informacion del posteo</h1>
     
     <p class="text-center">Titulo del posteo: {{posteo.titulo}}</p>
+    <p class="text-center">Subtitulo: {{posteo.subtitulo}}</p>
+    <p class="text-center">{{posteo.imagenposteo}}</p>
     <p class="text-center">Texto: {{posteo.texto}}</p>
+    <p class="text-center">Autor: {{posteo.autor}}</p>
     
     <p class="text-center" >
         <a href="{% url 'posteo_list' %}">Regresar</a>

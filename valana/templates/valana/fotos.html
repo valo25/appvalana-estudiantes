@@ -2,15 +2,16 @@
 
 {% block main_content %}
  
-<p>Imagenes</p>
+<p>Fotos</p>
 
 
     {% if fotos %}
         {% for foto in fotos %}
 
-            {{foto.titulo}}
+            <h3>{{foto.titulo}}</h3>
+            <img src="..appvalana-estudiantes/media/fotos/{{foto_url}}" alt="Foto" style="max-width: 100px;">
             {{foto.foto}}
-            {{foto.descripcion}}
+            <p>{{foto.descripcion}}</p>
 
         {% endfor %}
     {% endif %}
