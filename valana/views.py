@@ -6,7 +6,7 @@ from dataclasses import fields
 from pyexpat import model
 
 from valana.models import Posteo, Pais, Foto, Avatar
-from valana.forms import PosteoFormulario, UsuarioRegistroForm, UsuarioEditForm, AvatarFormulario, FotoFormulario
+from valana.forms import  PosteoFormulario, UsuarioRegistroForm, UsuarioEditForm, AvatarFormulario, FotoFormulario
 
 
 from django.views.generic import ListView
@@ -19,7 +19,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
 
@@ -184,22 +184,28 @@ class PosteoDetalle(DetailView):
 
 class PosteoCrear(CreateView):
     model = Posteo
-    success_url = "/valana/posteo/list"
-    fields = ['titulo','subtitulo', 'texto', 'autor', 'imagenposteo']
+    success_url = "/pages/posteo/list"
+    fields = ['titulo','subtitulo', 'texto', 'autor']
 
 class PosteoActualizar(UpdateView):
     model = Posteo
-    success_url = "/valana/posteo/list"
-    fields = ['titulo', 'subtitulo', 'texto', 'imagenposteo']
+    success_url = "/pages/posteo/list"
+    fields = ['titulo', 'subtitulo', 'texto']
 
 class PosteoBorrar(DeleteView):
     model = Posteo
-    success_url = "/valana/posteo/list"
+    success_url = "/pages/posteo/list"
 
+class PaisCrear(CreateView):
+    model = Pais
+    success_url = "/paises"
+    fields = ['nombre', 'capital']
+
+class PaisBorrar(DeleteView):
+    model = Pais
+    success_url = "/paises"
 
 def login_request(request):
-
-
     if request.method == "POST":
         formulario = AuthenticationForm(request, data=request.POST)
         if formulario.is_valid():
@@ -228,7 +234,7 @@ def login_request(request):
         return render(request, "valana/login.html", {"form": form})
 
 
-def register_request(request):
+def signup_request(request):
     
     if request.method == "POST":
         form = UsuarioRegistroForm(request.POST)
@@ -242,7 +248,7 @@ def register_request(request):
             return render(request, "valana/index.html",dict_ctx)
     else:
         form = UsuarioRegistroForm()
-        return render(request, "valana/register.html", {"form": form})
+        return render(request, "valana/signup.html", {"form": form})
 
 
 @login_required()
@@ -298,6 +304,7 @@ def cargar_avatar(request):
         return render(request, "valana/cargar_avatar.html", {"form": formulario})
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser)
 def cargar_foto(request):
     if request.method == "POST":
         formulario = FotoFormulario(request.POST, request.FILES)
@@ -326,5 +333,29 @@ def profile(request):
         imagen = avatar[0].imagen.url
 
     dict_ctx = {"title": "Perfil", "page": "Perfil", "imagen_url": imagen}
-    #dict_user = {"user": "anamornig", "date_init":date_init}
     return render(request, "valana/profile.html", dict_ctx)
+
+#def messages(request):
+    #avatar = Avatar.objects.filter(user=request.user)
+    
+    #if len(avatar) > 0:
+     #   imagen = avatar[0].imagen.url
+
+    #dict_ctx = {"title": "Mensajes", "page": "Mensajes", "imagen_url": imagen}
+
+
+
+    #if request.method == "POST":
+        #formulario = MensajeFormulario(request.POST)
+
+        #if formulario.is_valid():
+        #    data = formulario.cleaned_data
+
+       #     message = Message(data['asunto'], data['mensaje'], data['receptor'])
+      #      message.save()
+
+     #       return redirect("inicio")
+    #else:   
+        
+        #formulario = MensajeFormulario()
+        #return render(request, "valana/posteo_list.html", {"message": message, "title": "Mensajes", "page": "Mensajes", "formulario": formulario, "imagen_url": imagen})

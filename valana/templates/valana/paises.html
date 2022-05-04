@@ -19,6 +19,8 @@
                     <tr>
                     <td>{{pais.nombre}}</strong></td>
                     <td>{{pais.capital}}</td>
+                    <td><a class="card-link" href="{%url 'pais_borrar' pais.id%}">Borrar</a></td>
+               
                     </tr>
                 {% endfor %}
             {% endif %}
@@ -26,4 +28,11 @@
 
     </table>
 </div>
+
+
+<div class="container">
+    <a class="btn btn-primary btn-sm" href="{% url 'crear_pais' %}">Agregar país</a>
+</div>
+
+
 {% endblock main_content %}

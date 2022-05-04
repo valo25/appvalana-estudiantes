@@ -5,7 +5,7 @@
 {% endif %}
     
 
-<form action="/valana/update_posteo/{{titulo_id}}/" method="POST">
+<form action="/valana/pages/update_posteo/{{titulo_id}}/" method="POST">
     {% csrf_token %}
     <table>
         {{formulario.as_table}}

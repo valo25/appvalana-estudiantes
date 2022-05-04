@@ -35,3 +35,9 @@ class Foto(models.Model):
 class Avatar(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to="avatares", null=True, blank=True)
+
+#class Message(models.Model):
+    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    #asunto = models.CharField(max_length=100)
+    #mensaje = models.CharField(max_length=1000)
+    #receptor = models.ForeignKey(User, on_delete=models.CASCADE)

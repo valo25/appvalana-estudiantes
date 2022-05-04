@@ -1,3 +1,4 @@
+from collections import UserList
 from dataclasses import fields
 import email
 from django import forms
@@ -42,3 +43,8 @@ class FotoFormulario(forms.Form):
     imagen = forms.ImageField()
     titulo = forms.CharField(max_length=40)
     descripcion = forms.CharField(max_length=200)
+
+#class MensajeFormulario(forms.Form):
+ #   asunto = forms.CharField(max_length=100)
+  #  mensaje = forms.CharField(max_length=1000)
+   # receptor = forms.SelectMultiple(UserList)
